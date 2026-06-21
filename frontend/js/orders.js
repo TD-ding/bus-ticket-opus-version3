@@ -14,9 +14,11 @@ async function loadOrders() {
     return;
   }
   try {
+    document.getElementById("orderList").innerHTML = '<div class="loading">加载订单中…</div>';
     const list = await API.myOrders();
     renderOrders(list);
   } catch (err) {
+    document.getElementById("orderList").innerHTML = "";
     toast(err.message, "error");
   }
 }
@@ -57,8 +59,11 @@ function renderOrders(list) {
   });
 }
 
-// 退票。
+// 退票（需二次确认，避免误触）。
 async function cancelOrder(id) {
+  if (!confirm("确定要退掉这张票吗？")) {
+    return;
+  }
   try {
     await API.cancelOrder(id);
     toast("已退票", "success");

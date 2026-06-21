@@ -109,27 +109,36 @@ function initAuthModal() {
     document.getElementById("authSwitch").textContent =
       authMode === "login" ? "去注册" : "去登录";
   });
-  document.getElementById("authSubmit").addEventListener("click", async () => {
-    const username = document.getElementById("authUsername").value.trim();
-    const password = document.getElementById("authPassword").value;
-    if (!username || !password) {
-      toast("请输入用户名和密码", "error");
-      return;
-    }
-    try {
-      const fn = authMode === "login" ? API.login : API.register;
-      const res = await fn(username, password);
-      setAuth(res.token, res.user);
-      toast(authMode === "login" ? "登录成功" : "注册成功", "success");
-      closeAuthModal();
-      renderUserBox();
-      if (typeof onAuthSuccess === "function") {
-        onAuthSuccess();
-      }
-    } catch (err) {
-      toast(err.message, "error");
+  document.getElementById("authSubmit").addEventListener("click", submitAuth);
+  // 在密码框按回车直接提交，省去点按钮。
+  document.getElementById("authPassword").addEventListener("keydown", (e) => {
+    if (e.key === "Enter") {
+      submitAuth();
     }
   });
+}
+
+// 提交登录/注册。
+async function submitAuth() {
+  const username = document.getElementById("authUsername").value.trim();
+  const password = document.getElementById("authPassword").value;
+  if (!username || !password) {
+    toast("请输入用户名和密码", "error");
+    return;
+  }
+  try {
+    const fn = authMode === "login" ? API.login : API.register;
+    const res = await fn(username, password);
+    setAuth(res.token, res.user);
+    toast(authMode === "login" ? "登录成功" : "注册成功", "success");
+    closeAuthModal();
+    renderUserBox();
+    if (typeof onAuthSuccess === "function") {
+      onAuthSuccess();
+    }
+  } catch (err) {
+    toast(err.message, "error");
+  }
 }
 
 document.addEventListener("DOMContentLoaded", () => {

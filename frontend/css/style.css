@@ -193,6 +193,14 @@ input[type="number"] {
   padding: 40px 0;
 }
 
+/* 加载占位提示 */
+.loading {
+  text-align: center;
+  color: #6b7280;
+  padding: 36px 0;
+  font-size: 14px;
+}
+
 /* 订单列表 */
 .order-list {
   display: flex;
