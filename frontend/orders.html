@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>畅行汽车票 · 我的订单</title>
+  <link rel="stylesheet" href="css/style.css" />
+</head>
+<body>
+  <header class="topbar">
+    <div class="brand">🚌 畅行汽车票</div>
+    <nav class="nav">
+      <a href="index.html">购票</a>
+      <a href="orders.html" class="active">我的订单</a>
+      <span id="userBox" class="user-box"></span>
+    </nav>
+  </header>
+
+  <main class="container">
+    <h2>我的订单</h2>
+    <div id="orderList" class="order-list"></div>
+    <div id="orderEmpty" class="empty-hint" style="display:none;">还没有订单，去首页买一张吧～</div>
+  </main>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/api.js"></script>
+  <script src="js/common.js"></script>
+  <script src="js/orders.js"></script>
+</body>
+</html>

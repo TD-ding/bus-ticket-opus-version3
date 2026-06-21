@@ -1,0 +1,93 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>畅行汽车票 · 管理后台</title>
+  <link rel="stylesheet" href="css/admin.css" />
+</head>
+<body>
+  <!-- 登录视图 -->
+  <div id="loginView" class="login-view">
+    <div class="login-card">
+      <h2>管理后台登录</h2>
+      <input type="text" id="adminUser" placeholder="管理员账号" />
+      <input type="password" id="adminPass" placeholder="密码" />
+      <button id="adminLoginBtn" class="btn-primary">登录</button>
+      <p class="hint">默认账号 admin / admin123</p>
+    </div>
+  </div>
+
+  <!-- 管理视图 -->
+  <div id="adminView" class="admin-view" style="display:none;">
+    <header class="admin-top">
+      <span class="title">🚌 汽车票管理后台</span>
+      <span class="right">
+        <span id="adminName"></span>
+        <a href="#" id="adminLogout">退出</a>
+      </span>
+    </header>
+
+    <section class="stats" id="statsBox"></section>
+
+    <nav class="tabs">
+      <button class="tab active" data-tab="schedules">班次管理</button>
+      <button class="tab" data-tab="orders">订单总览</button>
+    </nav>
+
+    <!-- 班次管理 -->
+    <section id="tab-schedules" class="tab-panel">
+      <div class="panel-head">
+        <h3>班次列表</h3>
+        <button class="btn-primary" id="addScheduleBtn">+ 新增班次</button>
+      </div>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>编号</th><th>出发</th><th>到达</th><th>日期</th><th>发车</th>
+            <th>车型</th><th>票价</th><th>座位(余/总)</th><th>操作</th>
+          </tr>
+        </thead>
+        <tbody id="scheduleBody"></tbody>
+      </table>
+    </section>
+
+    <!-- 订单总览 -->
+    <section id="tab-orders" class="tab-panel" style="display:none;">
+      <h3>全部订单</h3>
+      <table class="data-table">
+        <thead>
+          <tr>
+            <th>订单号</th><th>线路</th><th>日期</th><th>乘车人</th>
+            <th>数量</th><th>金额</th><th>状态</th>
+          </tr>
+        </thead>
+        <tbody id="orderBody"></tbody>
+      </table>
+    </section>
+  </div>
+
+  <!-- 班次编辑弹窗 -->
+  <div id="scheduleModal" class="modal" style="display:none;">
+    <div class="modal-content">
+      <span class="modal-close" id="schedClose">&times;</span>
+      <h3 id="schedTitle">新增班次</h3>
+      <div class="form-grid">
+        <label>出发城市<input type="text" id="f_from" /></label>
+        <label>到达城市<input type="text" id="f_to" /></label>
+        <label>出发日期<input type="date" id="f_date" /></label>
+        <label>发车时间<input type="time" id="f_depart" /></label>
+        <label>到达时间<input type="time" id="f_arrive" /></label>
+        <label>车型<input type="text" id="f_bus" placeholder="豪华大巴" /></label>
+        <label>票价<input type="number" id="f_price" min="0" /></label>
+        <label>总座位<input type="number" id="f_seats" min="1" /></label>
+      </div>
+      <button class="btn-primary" id="schedSave">保存</button>
+    </div>
+  </div>
+
+  <div id="toast" class="toast"></div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>

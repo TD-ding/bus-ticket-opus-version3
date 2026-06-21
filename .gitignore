@@ -1,0 +1,17 @@
+# 依赖
+node_modules/
+
+# 环境变量
+.env
+
+# 构建产物
+dist/
+
+# 数据文件（运行时生成）
+backend/src/data/db.json
+
+# 日志
+*.log
+
+# 系统
+.DS_Store
