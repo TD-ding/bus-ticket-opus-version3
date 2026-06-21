@@ -76,10 +76,16 @@ async function doSearch(e) {
   if (date) {
     params.date = date;
   }
+  // 查询期间显示加载占位，避免页面空白。
+  const wrap = document.getElementById("resultList");
+  const empty = document.getElementById("emptyHint");
+  empty.style.display = "none";
+  wrap.innerHTML = '<div class="loading">正在查询班次…</div>';
   try {
     const list = await API.searchSchedules(params);
     renderResults(list);
   } catch (err) {
+    wrap.innerHTML = "";
     toast(err.message, "error");
   }
 }
@@ -109,6 +115,10 @@ async function submitOrder() {
     toast("请填写乘车人姓名", "error");
     return;
   }
+  // 下单时禁用按钮，避免重复点击造成多次下单。
+  const btn = document.getElementById("bookSubmit");
+  btn.disabled = true;
+  btn.textContent = "提交中…";
   try {
     await API.createOrder({
       scheduleId: selectedSchedule.id,
@@ -120,6 +130,9 @@ async function submitOrder() {
     doSearch();
   } catch (err) {
     toast(err.message, "error");
+  } finally {
+    btn.disabled = false;
+    btn.textContent = "确认下单";
   }
 }
 
