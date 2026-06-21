@@ -145,6 +145,11 @@ async function submitOrder() {
     toast("请填写乘车人姓名", "error");
     return;
   }
+  // 校验购票数量，避免空值或越界提交到后端。
+  if (!seatCount || seatCount < 1 || seatCount > 5) {
+    toast("购票数量需在 1-5 张之间", "error");
+    return;
+  }
   // 下单时禁用按钮，避免重复点击造成多次下单。
   const btn = document.getElementById("bookSubmit");
   btn.disabled = true;

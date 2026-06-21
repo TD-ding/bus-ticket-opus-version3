@@ -70,8 +70,16 @@ router.put("/schedules/:id", (req, res) => {
       schedule[f] = req.body[f];
     }
   });
+  // 编辑后出发与到达也不能相同（与新增保持一致的校验）。
+  if (schedule.from === schedule.to) {
+    return res.status(400).json({ error: "出发城市和到达城市不能相同" });
+  }
   if (req.body.price !== undefined) {
-    schedule.price = Number(req.body.price) || 0;
+    const price = Number(req.body.price);
+    if (Number.isNaN(price) || price < 0) {
+      return res.status(400).json({ error: "票价必须为非负数" });
+    }
+    schedule.price = price;
   }
   if (req.body.totalSeats !== undefined) {
     const total = parseInt(req.body.totalSeats, 10) || 0;

@@ -26,6 +26,12 @@ const API = (() => {
       data = null;
     }
     if (!res.ok) {
+      // 登录态失效（token 过期）时清除本地登录信息，
+      // 让页面回到未登录状态，避免反复用坏 token 请求。
+      if (res.status === 401 && auth) {
+        localStorage.removeItem("token");
+        localStorage.removeItem("user");
+      }
       throw new Error((data && data.error) || "请求失败");
     }
     return data;
