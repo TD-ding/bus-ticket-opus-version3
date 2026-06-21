@@ -1,6 +1,8 @@
 // 首页逻辑：加载城市、查询班次、下单。
 
 let selectedSchedule = null;
+// 缓存最近一次查询结果，供前端排序复用，避免重复请求。
+let lastResults = [];
 
 // 加载城市下拉。
 async function loadCities() {
@@ -21,7 +23,9 @@ async function loadCities() {
 function renderResults(list) {
   const wrap = document.getElementById("resultList");
   const empty = document.getElementById("emptyHint");
+  const count = document.getElementById("resultCount");
   wrap.innerHTML = "";
+  count.textContent = list.length ? `共 ${list.length} 个班次` : "";
   if (!list.length) {
     empty.style.display = "block";
     return;
@@ -51,6 +55,20 @@ function renderResults(list) {
     card.querySelector(".book-btn").addEventListener("click", () => openBookModal(s));
     wrap.appendChild(card);
   });
+}
+
+// 按当前排序方式对缓存结果排序并重新渲染。
+function applySort() {
+  const mode = document.getElementById("sortBy").value;
+  const list = [...lastResults];
+  if (mode === "priceAsc") {
+    list.sort((a, b) => a.price - b.price);
+  } else if (mode === "priceDesc") {
+    list.sort((a, b) => b.price - a.price);
+  } else if (mode === "timeAsc") {
+    list.sort((a, b) => (a.departDate + a.departTime).localeCompare(b.departDate + b.departTime));
+  }
+  renderResults(list);
 }
 
 // 查询班次。
@@ -83,7 +101,8 @@ async function doSearch(e) {
   wrap.innerHTML = '<div class="loading">正在查询班次…</div>';
   try {
     const list = await API.searchSchedules(params);
-    renderResults(list);
+    lastResults = list;
+    applySort();
   } catch (err) {
     wrap.innerHTML = "";
     toast(err.message, "error");
@@ -104,7 +123,18 @@ function openBookModal(schedule) {
     <p>单价 ¥${schedule.price}</p>`;
   document.getElementById("passengerName").value = currentUser().username;
   document.getElementById("seatCount").value = 1;
+  updateTotalPreview();
   document.getElementById("bookModal").style.display = "flex";
+}
+
+// 根据单价与数量实时计算总价预览。
+function updateTotalPreview() {
+  if (!selectedSchedule) {
+    return;
+  }
+  const count = parseInt(document.getElementById("seatCount").value, 10) || 0;
+  document.getElementById("totalPreview").textContent =
+    count > 0 ? `合计：¥${selectedSchedule.price * count}` : "";
 }
 
 // 提交订单。
@@ -149,4 +179,8 @@ document.addEventListener("DOMContentLoaded", () => {
     document.getElementById("bookModal").style.display = "none";
   });
   document.getElementById("bookSubmit").addEventListener("click", submitOrder);
+  // 切换排序方式时无需重新请求，直接对缓存结果排序。
+  document.getElementById("sortBy").addEventListener("change", applySort);
+  // 数量变化时刷新总价预览。
+  document.getElementById("seatCount").addEventListener("input", updateTotalPreview);
 });

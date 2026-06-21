@@ -145,6 +145,31 @@ input[type="number"] {
   gap: 12px;
 }
 
+/* 结果栏：数量统计 + 排序 */
+.results-bar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 12px;
+}
+
+.result-count {
+  font-size: 14px;
+  color: #6b7280;
+}
+
+.sort-label {
+  font-size: 13px;
+  color: #6b7280;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sort-label select {
+  padding: 6px 8px;
+}
+
 .schedule-card {
   background: #fff;
   border-radius: 12px;
@@ -309,6 +334,13 @@ input[type="number"] {
   border-radius: 8px;
   padding: 10px 12px;
   font-size: 14px;
+}
+
+/* 下单总价预览 */
+.total-preview {
+  font-size: 16px;
+  font-weight: 700;
+  color: #dc2626;
 }
 
 /* Toast */
