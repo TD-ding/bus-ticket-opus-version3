@@ -27,8 +27,10 @@ bus-ticket-opus-version3/
 │   │   ├── server.js       # 应用入口
 │   │   ├── constants.js    # 全局常量
 │   │   ├── db.js           # JSON 文件存储
+│   │   ├── utils.js        # 共享工具（余票计算）
 │   │   ├── middleware/auth.js   # JWT 鉴权中间件
 │   │   └── routes/         # auth / schedules / orders / admin 路由
+│   ├── test/               # jest + supertest 测试
 │   ├── eslint.config.js
 │   └── package.json
 ├── frontend/               # 用户端页面
@@ -40,10 +42,21 @@ bus-ticket-opus-version3/
 │   ├── index.html
 │   ├── css/admin.css
 │   └── js/admin.js
+├── docs/                   # 项目文档
+├── .github/workflows/      # CI / CD
+├── Dockerfile
+├── docker-compose.yml
 ├── .gitignore
 ├── .dockerignore
 └── .env.example
 ```
+
+## 文档
+
+- [docs/frontend.md](docs/frontend.md) — 用户端前端架构
+- [docs/backend.md](docs/backend.md) — 后端 API 与数据模型
+- [docs/admin-frontend.md](docs/admin-frontend.md) — 管理后台
+- [docs/deployment.md](docs/deployment.md) — 部署与运维
 
 ## 如何运行
 
@@ -62,6 +75,20 @@ npm start
 - 管理后台：<http://localhost:3000/admin/>
 
 默认管理员账号：`admin` / `admin123`（可通过环境变量 `ADMIN_USERNAME` / `ADMIN_PASSWORD` 修改）。
+
+### Docker 运行
+
+```bash
+docker compose up -d        # 一键启动，访问 http://localhost:3000/
+```
+
+详见 [docs/deployment.md](docs/deployment.md)。
+
+### 测试
+
+```bash
+cd backend && npm test      # jest + supertest，共 14 个用例
+```
 
 ## 主要 API
 
