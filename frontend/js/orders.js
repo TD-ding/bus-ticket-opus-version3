@@ -42,7 +42,7 @@ function renderOrders(list) {
       <div class="order-meta">
         <span>${o.departDate} ${o.departTime}</span>
         <span>${o.busType}</span>
-        <span>乘车人：${o.passengerName}</span>
+        <span>乘车人：${escapeHtml(o.passengerName)}</span>
         <span>${o.seatCount} 张 · ¥${o.totalPrice}</span>
       </div>
       <div class="order-action"></div>`;

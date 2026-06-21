@@ -34,6 +34,9 @@ router.post("/schedules", (req, res) => {
   if (!from || !to || !departDate || !departTime || !busType) {
     return res.status(400).json({ error: "班次信息不完整" });
   }
+  if (from === to) {
+    return res.status(400).json({ error: "出发城市和到达城市不能相同" });
+  }
   const db = load();
   const schedule = {
     id: "B" + Date.now(),

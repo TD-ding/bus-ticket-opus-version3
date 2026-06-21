@@ -1,5 +1,16 @@
 // 通用工具：登录态管理、顶部用户区渲染、toast 提示。
 
+// HTML 转义：用户输入（如乘车人姓名）插入页面前必须转义，
+// 避免特殊符号破坏排版或引入 XSS。
+function escapeHtml(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // 当前登录用户（从 localStorage 还原）。
 function currentUser() {
   try {
@@ -30,7 +41,7 @@ function renderUserBox() {
   }
   const user = currentUser();
   if (user) {
-    box.innerHTML = `<span class="hi">你好，${user.username}</span> <a href="#" id="logoutBtn">退出</a>`;
+    box.innerHTML = `<span class="hi">你好，${escapeHtml(user.username)}</span> <a href="#" id="logoutBtn">退出</a>`;
     const btn = document.getElementById("logoutBtn");
     btn.addEventListener("click", (e) => {
       e.preventDefault();

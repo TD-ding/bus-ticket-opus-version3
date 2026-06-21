@@ -62,6 +62,11 @@ async function doSearch(e) {
   const from = document.getElementById("fromCity").value;
   const to = document.getElementById("toCity").value;
   const date = document.getElementById("departDate").value;
+  // 出发与到达不能是同一城市。
+  if (from && to && from === to) {
+    toast("出发城市和到达城市不能相同", "error");
+    return;
+  }
   if (from) {
     params.from = from;
   }

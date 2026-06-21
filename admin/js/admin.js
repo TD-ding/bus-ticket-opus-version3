@@ -3,6 +3,16 @@
 
 const API_BASE = "/api";
 
+// HTML 转义：表格中展示的用户数据需转义，避免特殊符号破坏布局。
+function escapeHtml(str) {
+  return String(str == null ? "" : str)
+    .replace(/&/g, "&amp;")
+    .replace(/</g, "&lt;")
+    .replace(/>/g, "&gt;")
+    .replace(/"/g, "&quot;")
+    .replace(/'/g, "&#39;");
+}
+
 // 读取 / 保存管理员 token。
 function adminToken() {
   return localStorage.getItem("admin_token");
@@ -200,8 +210,8 @@ async function loadOrders() {
     list.forEach((o) => {
       const tr = document.createElement("tr");
       tr.innerHTML = `
-        <td>${o.id}</td><td>${o.from} → ${o.to}</td>
-        <td>${o.departDate} ${o.departTime}</td><td>${o.passengerName}</td>
+        <td>${o.id}</td><td>${escapeHtml(o.from)} → ${escapeHtml(o.to)}</td>
+        <td>${o.departDate} ${o.departTime}</td><td>${escapeHtml(o.passengerName)}</td>
         <td>${o.seatCount}</td><td>¥${o.totalPrice}</td>
         <td>${STATUS_TEXT[o.status] || o.status}</td>`;
       body.appendChild(tr);
