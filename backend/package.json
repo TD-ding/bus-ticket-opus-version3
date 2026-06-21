@@ -1,0 +1,25 @@
+{
+  "name": "bus-ticket-backend",
+  "version": "1.0.0",
+  "description": "汽车票订购网站后端 (opus-version3)",
+  "main": "src/server.js",
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "lint": "node node_modules/eslint/bin/eslint.js src/",
+    "test": "jest --forceExit --detectOpenHandles"
+  },
+  "dependencies": {
+    "bcryptjs": "^2.4.3",
+    "cors": "^2.8.5",
+    "express": "^4.19.2",
+    "jsonwebtoken": "^9.0.2"
+  },
+  "devDependencies": {
+    "@eslint/js": "^9.9.0",
+    "eslint": "^9.9.0",
+    "jest": "^29.7.0",
+    "supertest": "^7.0.0"
+  },
+  "license": "MIT"
+}
