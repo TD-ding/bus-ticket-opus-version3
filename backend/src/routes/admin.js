@@ -2,6 +2,8 @@
 const express = require("express");
 const { load, save } = require("../db");
 const { authRequired, adminRequired } = require("../middleware/auth");
+const { ROLES, ORDER_STATUS } = require("../constants");
+const { withRemaining } = require("../utils");
 
 const router = express.Router();
 
@@ -11,11 +13,11 @@ router.use(authRequired, adminRequired);
 // 概览统计：班次数、订单数、营收。
 router.get("/stats", (req, res) => {
   const db = load();
-  const paidOrders = db.orders.filter((o) => o.status === "paid");
+  const paidOrders = db.orders.filter((o) => o.status === ORDER_STATUS.PAID);
   const revenue = paidOrders.reduce((sum, o) => sum + o.totalPrice, 0);
   res.json({
     scheduleCount: db.schedules.length,
-    userCount: db.users.filter((u) => u.role === "user").length,
+    userCount: db.users.filter((u) => u.role === ROLES.USER).length,
     orderCount: db.orders.length,
     paidOrderCount: paidOrders.length,
     revenue
@@ -25,7 +27,7 @@ router.get("/stats", (req, res) => {
 // 列出全部班次（含余票）。
 router.get("/schedules", (req, res) => {
   const db = load();
-  res.json(db.schedules.map((s) => ({ ...s, remainingSeats: s.totalSeats - s.soldSeats })));
+  res.json(db.schedules.map(withRemaining));
 });
 
 // 新增班次。
@@ -90,7 +92,7 @@ router.delete("/schedules/:id", (req, res) => {
   if (idx === -1) {
     return res.status(404).json({ error: "班次不存在" });
   }
-  const hasOrder = db.orders.some((o) => o.scheduleId === req.params.id && o.status === "paid");
+  const hasOrder = db.orders.some((o) => o.scheduleId === req.params.id && o.status === ORDER_STATUS.PAID);
   if (hasOrder) {
     return res.status(409).json({ error: "该班次已有有效订单，无法删除" });
   }
