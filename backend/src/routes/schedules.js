@@ -1,6 +1,7 @@
 // 班次路由：查询可购买的汽车票班次。
 const express = require("express");
 const { load } = require("../db");
+const { withRemaining } = require("../utils");
 
 const router = express.Router();
 
@@ -19,8 +20,7 @@ router.get("/", (req, res) => {
     list = list.filter((s) => s.departDate === date);
   }
   // 附带剩余座位数，方便前端展示。
-  const result = list.map((s) => ({ ...s, remainingSeats: s.totalSeats - s.soldSeats }));
-  res.json(result);
+  res.json(list.map(withRemaining));
 });
 
 // 城市列表：用于前端下拉选择（去重）。
@@ -41,7 +41,7 @@ router.get("/:id", (req, res) => {
   if (!s) {
     return res.status(404).json({ error: "班次不存在" });
   }
-  res.json({ ...s, remainingSeats: s.totalSeats - s.soldSeats });
+  res.json(withRemaining(s));
 });
 
 module.exports = router;
