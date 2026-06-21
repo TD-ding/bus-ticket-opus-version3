@@ -37,6 +37,17 @@
     </section>
 
     <section class="results">
+      <div class="results-bar">
+        <span id="resultCount" class="result-count"></span>
+        <label class="sort-label">排序
+          <select id="sortBy">
+            <option value="default">默认</option>
+            <option value="priceAsc">价格从低到高</option>
+            <option value="priceDesc">价格从高到低</option>
+            <option value="timeAsc">发车时间早到晚</option>
+          </select>
+        </label>
+      </div>
       <div id="resultList" class="result-list"></div>
       <div id="emptyHint" class="empty-hint" style="display:none;">暂无符合条件的班次</div>
     </section>
@@ -67,6 +78,7 @@
       <label class="inline-label">购票数量
         <input type="number" id="seatCount" value="1" min="1" max="5" />
       </label>
+      <div id="totalPreview" class="total-preview"></div>
       <button id="bookSubmit" class="btn-primary">确认下单</button>
     </div>
   </div>
